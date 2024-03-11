@@ -27,3 +27,22 @@ app.use("/client", clientRoutes);
 app.use("/general", generalRoutes);
 app.use("/management", managementRoutes);
 app.use("/sales", salesRoutes);
+
+// MONGOOSE SETUP
+const PORT = process.env.PORT || 9001;
+
+const connectDB = async () => {
+  try {
+    const connectionInstance = await mongoose.connect(`${process.env.MONGO_URL}`);
+    console.log(`\n MongoDB connected !! DB HOST: ${connectionInstance.connection.host}`);
+  } catch (error) {
+    console.error("MongoDB connection FAILD::::::: ", error);
+    process.exit(1);
+  }
+};
+
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => console.log(`Server listening on --PORT : ${PORT}`));
+  })
+  .catch((err) => console.error(err));
